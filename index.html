@@ -347,7 +347,8 @@
 				var g = context.createGain();
 				var v;
 				s.buffer = object.buffer;
-				s.playbackRate.value = randomRange(0.5, 2);
+				// s.playbackRate.value = randomRange(0.5, 2); // random pitch
+				s.playbackRate.value = 1;
 				if(volume){
 					v = rangeMap(volume, 1, 127, 0.2, 2);
 					s.connect(g);
