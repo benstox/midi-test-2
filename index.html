@@ -169,14 +169,26 @@
 				switch(e.keyCode){
 					case 81:
 						btn[0].classList.add('active');
+
+						melody = [  // doesn't do anything yet
+							{note: 0, delay: 300},
+							{note: 1, delay: 300},
+							{note: 3, delay: 300},
+							{note: 2, delay: 300},
+							{note: 1, delay: 300},
+							{note: 2, delay: 350},
+							{note: 3, delay: 400},
+							{note: 4, delay: 450}];
+
+						// hard-coded timings
 						btn[0].play();
 						setTimeout(btn[1].play, 300);
-						setTimeout(btn[3].play, 300);
-						setTimeout(btn[2].play, 300);
-						setTimeout(btn[1].play, 300);
-						setTimeout(btn[2].play, 350);
-						setTimeout(btn[3].play, 400);
-						setTimeout(btn[4].play, 450);
+						setTimeout(btn[3].play, 600);
+						setTimeout(btn[2].play, 900);
+						setTimeout(btn[1].play, 1200);
+						setTimeout(btn[2].play, 1550);
+						setTimeout(btn[3].play, 1900);
+						setTimeout(btn[4].play, 2350);
 						break;
 					case 87:
 						btn[1].classList.add('active');
