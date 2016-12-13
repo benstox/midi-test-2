@@ -170,20 +170,13 @@
 					case 81:
 						btn[0].classList.add('active');
 						btn[0].play();
-						setTimeout(300)
-						btn[1].play();
-						setTimeout(300)
-						btn[3].play();
-						setTimeout(300)
-						btn[2].play();
-						setTimeout(300)
-						btn[1].play();
-						setTimeout(300)
-						btn[2].play();
-						setTimeout(320)
-						btn[3].play();
-						setTimeout(340)
-						btn[4].play();
+						setTimeout(btn[1].play, 300);
+						setTimeout(btn[3].play, 300);
+						setTimeout(btn[2].play, 300);
+						setTimeout(btn[1].play, 300);
+						setTimeout(btn[2].play, 350);
+						setTimeout(btn[3].play, 400);
+						setTimeout(btn[4].play, 450);
 						break;
 					case 87:
 						btn[1].classList.add('active');
