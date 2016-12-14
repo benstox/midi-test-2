@@ -71,39 +71,41 @@ var notes = _.mapValues({
                 case 81:
                     btn[0].classList.add('active');
 
-                    // doesn't do anything yet
+                    // get a Markov melody!
                     var markov_order = 4;
                     markov_melody = generate_markov(VI, markov_order);
 
-                    melody = [ // Asperges me
-                        {shorthand: "c", duration: 300},
-                        {shorthand: "d", duration: 300},
-                        {shorthand: "f", duration: 300},
-                        {shorthand: "e", duration: 300},
-                        {shorthand: "d", duration: 325},
-                        {shorthand: "e", duration: 350},
-                        {shorthand: "f", duration: 350},
-                        {shorthand: "g", duration: 1000},
-                        {shorthand: "h", duration: 500},
-                        {shorthand: "ix", duration: 300},
-                        {shorthand: "j", duration: 300},
-                        {shorthand: "j", duration: 300},
-                        {shorthand: "ix", duration: 300},
-                        {shorthand: "h", duration: 300},
-                        {shorthand: "g", duration: 300},
-                        {shorthand: "h", duration: 300},
-                        {shorthand: "g", duration: 750},
-                        {shorthand: "f", duration: 300},
-                        {shorthand: "e", duration: 300},
-                        {shorthand: "f", duration: 350},
-                        {shorthand: "g", duration: 300},
-                        {shorthand: "f", duration: 300},
-                        {shorthand: "d", duration: 300},
-                        {shorthand: "e", duration: 350},
-                        {shorthand: "c", duration: 600},
-                        {shorthand: "d", duration: 600},
-                        {shorthand: "c", duration: 700},
-                        {shorthand: "c", duration: 800}];
+                    // melody = [ // Asperges me
+                    //     {shorthand: "c", duration: 300},
+                    //     {shorthand: "d", duration: 300},
+                    //     {shorthand: "f", duration: 300},
+                    //     {shorthand: "e", duration: 300},
+                    //     {shorthand: "d", duration: 325},
+                    //     {shorthand: "e", duration: 350},
+                    //     {shorthand: "f", duration: 350},
+                    //     {shorthand: "g", duration: 1000},
+                    //     {shorthand: "h", duration: 500},
+                    //     {shorthand: "ix", duration: 300},
+                    //     {shorthand: "j", duration: 300},
+                    //     {shorthand: "j", duration: 300},
+                    //     {shorthand: "ix", duration: 300},
+                    //     {shorthand: "h", duration: 300},
+                    //     {shorthand: "g", duration: 300},
+                    //     {shorthand: "h", duration: 300},
+                    //     {shorthand: "g", duration: 750},
+                    //     {shorthand: "f", duration: 300},
+                    //     {shorthand: "e", duration: 300},
+                    //     {shorthand: "f", duration: 350},
+                    //     {shorthand: "g", duration: 300},
+                    //     {shorthand: "f", duration: 300},
+                    //     {shorthand: "d", duration: 300},
+                    //     {shorthand: "e", duration: 350},
+                    //     {shorthand: "c", duration: 600},
+                    //     {shorthand: "d", duration: 600},
+                    //     {shorthand: "c", duration: 700},
+                    //     {shorthand: "c", duration: 800}];
+
+                    melody = processMarkov(markov_melody);
 
                     // work out the temporal position of each note in the melody
                     // based on cummulative durations
@@ -317,8 +319,8 @@ var notes = _.mapValues({
 
     // utility functions
     function processMarkov(score) {
-        // not finished
-        var with_durations = _.reduce(_.split(x, ""), function(acc, value, index, coll) {
+        // add durations to the score provided by the Markov chains
+        var with_durations = _.reduce(_.split(score, ""), function(acc, value, index, coll) {
             if (value == "." || value == "_") {
                 return(acc);
             } else {
@@ -334,7 +336,7 @@ var notes = _.mapValues({
                 };
                 duration = duration + _.random(-variation, variation);
                 acc.push({
-                    shorthand : value,
+                    shorthand : (value == "!" ? "ix" : value),
                     duration  : duration,
                 });
             };

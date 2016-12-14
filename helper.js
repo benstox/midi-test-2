@@ -15,8 +15,8 @@ var randInt = function(number1, number2) {
         var less = number1;
     };
     var diff = great - less;
-    return less + Math.floor(ROT.RNG.getUniform() * diff);
-    // return less + Math.floor(Math.random()*diff); // DEBUG
+    // return less + Math.floor(ROT.RNG.getUniform() * diff);
+    return less + Math.floor(Math.random() * diff); // DEBUG
 };
 
 var randChoice = function(choice_list) {
