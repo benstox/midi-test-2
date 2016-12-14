@@ -318,8 +318,29 @@ var notes = _.mapValues({
     // utility functions
     function processMarkov(score) {
         // not finished
-        phrases = _.remove(_.split(score, "."), function(x) {return(x == "");});
-        return();
+        var with_durations = _.reduce(_.split(x, ""), function(acc, value, index, coll) {
+            if (value == "." || value == "_") {
+                return(acc);
+            } else {
+                var variation = 25;
+                if (coll[index-1] == "." && coll[index+1] == ".") {
+                    var duration = 800;
+                } else if (coll[index+1] == ".") {
+                    var duration = 600;
+                } else if (coll[index+1] == "_") {
+                    var duration = 450;
+                } else {
+                    var duration = 300;
+                };
+                duration = duration + _.random(-variation, variation);
+                acc.push({
+                    shorthand : value,
+                    duration  : duration,
+                });
+            };
+            return(acc);
+        }, []);
+        return(with_durations);
     }
 
     function rangeMap(x, a1, a2, b1, b2){
