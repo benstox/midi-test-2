@@ -1,5 +1,6 @@
 syntax: glob
 
+.Rhistory
 .DS_Store
 _DS_Store
 

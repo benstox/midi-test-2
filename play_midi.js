@@ -1,22 +1,22 @@
 //http://stackoverflow.com/questions/23687635/how-to-stop-audio-in-an-iframe-using-web-audio-api-after-hiding-its-container-di
 
 // set up the instrument
-var instrument = "celesta-mp3";
+var instrument = "tubular_bells-mp3";
 var notes = _.mapValues({
     c: {name: "C4"},
     d: {name: "D4"},
     e: {name: "E4"},
     f: {name: "F4"},
     g: {name: "G4"},
-    h: {name: "A5"},
-    i: {name: "B5"},
-    ix: {name: "Bb5"},
+    h: {name: "A4"},
+    i: {name: "B4"},
+    ix: {name: "Bb4"},
     j: {name: "C5"},
     k: {name: "D5"},
     l: {name: "E5"},
     m: {name: "F5"},
     n: {name: "G5"},
-    o: {name: "A6"}}, function(v) {
+    o: {name: "A5"}}, function(v) {
         return(_.set(v, "source", "audio/" + instrument + "/" + v.name + ".mp3"));
     });
 
@@ -58,7 +58,7 @@ var notes = _.mapValues({
     // user interaction 
     function clickPlayOn(e){
         e.target.classList.add('active');
-        e.target.play();
+        // e.target.play();
     }
     
     function clickPlayOff(e){
@@ -78,7 +78,7 @@ var notes = _.mapValues({
                         {shorthand: "e", duration: 300},
                         {shorthand: "d", duration: 325},
                         {shorthand: "e", duration: 350},
-                        {shorthand: "f", duration: 375},
+                        {shorthand: "f", duration: 350},
                         {shorthand: "g", duration: 1000},
                         {shorthand: "h", duration: 500},
                         {shorthand: "ix", duration: 300},
@@ -86,17 +86,28 @@ var notes = _.mapValues({
                         {shorthand: "j", duration: 300},
                         {shorthand: "ix", duration: 300},
                         {shorthand: "h", duration: 300},
-                        {shorthand: "g", duration: 300}];
+                        {shorthand: "g", duration: 300},
+                        {shorthand: "h", duration: 300},
+                        {shorthand: "g", duration: 750},
+                        {shorthand: "f", duration: 300},
+                        {shorthand: "e", duration: 300},
+                        {shorthand: "f", duration: 350},
+                        {shorthand: "g", duration: 300},
+                        {shorthand: "f", duration: 300},
+                        {shorthand: "d", duration: 300},
+                        {shorthand: "e", duration: 350},
+                        {shorthand: "c", duration: 600},
+                        {shorthand: "d", duration: 600},
+                        {shorthand: "c", duration: 700},
+                        {shorthand: "c", duration: 800}];
 
                     // work out the temporal position of each note in the melody
                     // based on cummulative durations
-                    // (NEEDS TO BE ALTERED SO THAT THE FIRST POSITION IS 0 AND THE DURATION OF THE
-                    // LAST NOTE DOESN'T COUNT)
                     melody = _.reduce(
                         melody,
                         function (acc, n) {
                             acc.push(
-                                _.set(n, "position", (acc.length > 0 ? acc[acc.length-1].position : 0) + n.duration));
+                                _.set(n, "position", (acc.length > 0 ? acc[acc.length-1].position + acc[acc.length-1].duration : 0)));
                             return(acc);
                         }, []);
 
@@ -104,16 +115,9 @@ var notes = _.mapValues({
                     _.forEach(
                         melody,
                         function(note_to_play) {
+                            console.log(notes[note_to_play.shorthand].source);
                             setTimeout(notes[note_to_play.shorthand].play, note_to_play.position);
                         });
-                    // notes.C4.play();
-                    // setTimeout(notes.D4.play, 300);
-                    // setTimeout(notes.F4.play, 600);
-                    // setTimeout(notes.E4.play, 900);
-                    // setTimeout(notes.D4.play, 1200);
-                    // setTimeout(notes.E4.play, 1550);
-                    // setTimeout(notes.F4.play, 1900);
-                    // setTimeout(notes.G4.play, 2350);
                     break;
                 case 87:
                     btn[1].classList.add('active');
