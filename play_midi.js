@@ -71,7 +71,11 @@ var notes = _.mapValues({
                 case 81:
                     btn[0].classList.add('active');
 
-                    melody = [
+                    // doesn't do anything yet
+                    var markov_order = 4;
+                    markov_melody = generate_markov(VI, markov_order);
+
+                    melody = [ // Asperges me
                         {shorthand: "c", duration: 300},
                         {shorthand: "d", duration: 300},
                         {shorthand: "f", duration: 300},
@@ -312,8 +316,10 @@ var notes = _.mapValues({
     }
 
     // utility functions
-    function randomRange(min, max){
-        return Math.random() * (max + min) + min;
+    function processMarkov(score) {
+        // not finished
+        phrases = _.remove(_.split(score, "."), function(x) {return(x == "");});
+        return();
     }
 
     function rangeMap(x, a1, a2, b1, b2){
