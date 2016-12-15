@@ -22,7 +22,7 @@
 //         pass
 //     return s
 
-var load_data = function(data, order) {
+var load_melody_data = function(data, order) {
     // Process all the data provided for Markov chaining.
     // Yields initials, full chains and finals.
     var initials = _.map(
@@ -78,7 +78,11 @@ var load_data = function(data, order) {
 
 var generate_markov = function(data, order, min_length) {
     min_length = min_length || 15;
-    var processed = load_data(data, order);
+    if (data["initials"] && data["chains"] && data["finals"]) {
+        var processed = data;
+    } else {
+        var processed = load_melody_data(data, order);
+    };
     var s = randChoice(processed.initials);
     while (s.length < min_length || !(_.some(processed.finals, function(final) {return(_.endsWith(s, final));}))) {
         s = s + randChoice(processed.chains[s.substring(s.length - order)]);

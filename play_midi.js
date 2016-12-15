@@ -1,7 +1,7 @@
 //http://stackoverflow.com/questions/23687635/how-to-stop-audio-in-an-iframe-using-web-audio-api-after-hiding-its-container-di
 
 // set up the instrument
-var instrument = "tubular_bells-mp3";
+var instrument = "celesta-mp3";
 var notes = _.mapValues({
     c: {name: "C4"},
     d: {name: "D4"},
@@ -19,6 +19,8 @@ var notes = _.mapValues({
     o: {name: "A5"}}, function(v) {
         return(_.set(v, "source", "audio/" + instrument + "/" + v.name + ".mp3"));
     });
+var markov_order = 3;
+var processed_melodies = load_melody_data(VI, markov_order);
 
 // do stuff from the tutorial
 (function(){
@@ -72,8 +74,8 @@ var notes = _.mapValues({
                     btn[0].classList.add('active');
 
                     // get a Markov melody!
-                    var markov_order = 4;
-                    markov_melody = generate_markov(VI, markov_order);
+                    score = generate_markov(processed_melodies, markov_order);
+                    $("#print-melody").text(score);
 
                     // melody = [ // Asperges me
                     //     {shorthand: "c", duration: 300},
@@ -105,7 +107,8 @@ var notes = _.mapValues({
                     //     {shorthand: "c", duration: 700},
                     //     {shorthand: "c", duration: 800}];
 
-                    melody = processMarkov(markov_melody);
+                    // turn the Markov score into a list of notes and durations
+                    melody = processMarkovScore(score);
 
                     // work out the temporal position of each note in the melody
                     // based on cummulative durations
@@ -185,7 +188,8 @@ var notes = _.mapValues({
         showMIDIPorts(midi);
     }
 
-    function onMIDIMessage(event){
+    function onMIDIMessage(event) {
+        console.log(event);
         data = event.data,
         cmd = data[0] >> 4,
         channel = data[0] & 0xf,
@@ -199,7 +203,7 @@ var notes = _.mapValues({
         // pressure: 176, cmd 11: 
         // bend: 224, cmd: 14
         log('MIDI data', data);
-        switch(type){
+        switch(type) {
             case 144: // noteOn message 
                 noteOn(note, velocity);
                 break;
@@ -318,7 +322,7 @@ var notes = _.mapValues({
     }
 
     // utility functions
-    function processMarkov(score) {
+    function processMarkovScore(score) {
         // add durations to the score provided by the Markov chains
         var with_durations = _.reduce(_.split(score, ""), function(acc, value, index, coll) {
             if (value == "." || value == "_") {
