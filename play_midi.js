@@ -1,4 +1,5 @@
-//http://stackoverflow.com/questions/23687635/how-to-stop-audio-in-an-iframe-using-web-audio-api-after-hiding-its-container-di
+// http://stackoverflow.com/questions/23687635/how-to-stop-audio-in-an-iframe-using-web-audio-api-after-hiding-its-container-di
+// https://www.keithmcmillen.com/blog/making-music-in-the-browser-web-midi-api/
 
 // set up the instrument
 var instrument = "celesta-mp3";
