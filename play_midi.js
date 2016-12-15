@@ -334,7 +334,7 @@ var processed_melodies = load_melody_data(VI, markov_order);
                 } else if (coll[index+1] == ".") {
                     var duration = 600;
                 } else if (coll[index+1] == "_") {
-                    var duration = 450;
+                    var duration = 525;
                 } else {
                     var duration = 300;
                 };
