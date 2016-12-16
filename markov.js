@@ -89,3 +89,30 @@ var generate_markov = function(data, order, min_length) {
     };
     return(s);
 };
+
+var process_markov_score = function(score) {
+    // add durations to the score provided by the Markov chains
+    var with_durations = _.reduce(_.split(score, ""), function(acc, value, index, coll) {
+        if (value == "." || value == "_") {
+            return(acc);
+        } else {
+            var variation = 25;
+            if (coll[index-1] == "." && coll[index+1] == ".") {
+                var duration = 800;
+            } else if (coll[index+1] == ".") {
+                var duration = 600;
+            } else if (coll[index+1] == "_") {
+                var duration = 525;
+            } else {
+                var duration = 300;
+            };
+            duration = duration + _.random(-variation, variation);
+            acc.push({
+                shorthand : (value == "!" ? "ix" : value),
+                duration  : duration,
+            });
+        };
+        return(acc);
+    }, []);
+    return(with_durations);
+};

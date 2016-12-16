@@ -47,6 +47,7 @@ for(var i = 0; i < btn.length; i++){
     btn[i].addEventListener('mousedown', clickPlayOn);
     btn[i].addEventListener('mouseup', clickPlayOff);   
 }
+
 // prepare audio files
 _.forEach(notes, addAudioProperties);
 
@@ -58,7 +59,7 @@ var sampleMap = {
     key64: 5
 };
 
-// user interaction 
+// user interaction --------------------------------------------------------------
 var clickPlayOn = function(e) {
     e.target.classList.add('active');
     // e.target.play();
@@ -109,7 +110,7 @@ var keyController = function(e) {
                 //     {shorthand: "c", duration: 800}];
 
                 // turn the Markov score into a list of notes and durations
-                melody = processMarkovScore(score);
+                melody = process_markov_score(score);
 
                 // work out the temporal position of each note in the melody
                 // based on cummulative durations
@@ -171,7 +172,7 @@ var keyController = function(e) {
     };
 };
 
-// midi functions
+// midi functions --------------------------------------------------------------
 var onMIDISuccess = function(midiAccess) {
     midi = midiAccess;
     var inputs = midi.inputs.values();
@@ -254,7 +255,7 @@ var onMIDIFailure = function(e) {
     log("No access to MIDI devices or your browser doesn't support WebMIDI API. Please use WebMIDIAPIShim " + e);
 };
 
-// MIDI utility functions
+// MIDI utility functions --------------------------------------------------------------
 var showMIDIPorts = function(midiAccess) {
     var inputs = midiAccess.inputs,
             outputs = midiAccess.outputs, 
@@ -282,7 +283,7 @@ var showMIDIPorts = function(midiAccess) {
     deviceInfoOutputs.innerHTML = html + '</div>';
 };
 
-// audio functions
+// audio functions --------------------------------------------------------------
 var loadAudio = function(object, url) {
     var request = new XMLHttpRequest();
     request.open('GET', url, true);
@@ -318,45 +319,4 @@ var addAudioProperties = function(object) {
         s.start();
         object.s = s;
     };
-};
-
-// utility functions
-var processMarkovScore = function(score) {
-    // add durations to the score provided by the Markov chains
-    var with_durations = _.reduce(_.split(score, ""), function(acc, value, index, coll) {
-        if (value == "." || value == "_") {
-            return(acc);
-        } else {
-            var variation = 25;
-            if (coll[index-1] == "." && coll[index+1] == ".") {
-                var duration = 800;
-            } else if (coll[index+1] == ".") {
-                var duration = 600;
-            } else if (coll[index+1] == "_") {
-                var duration = 525;
-            } else {
-                var duration = 300;
-            };
-            duration = duration + _.random(-variation, variation);
-            acc.push({
-                shorthand : (value == "!" ? "ix" : value),
-                duration  : duration,
-            });
-        };
-        return(acc);
-    }, []);
-    return(with_durations);
-};
-
-var rangeMap = function(x, a1, a2, b1, b2) {
-    return ((x - a1)/(a2-a1)) * (b2 - b1) + b1;
-};
-
-var frequencyFromNoteNumber = function(note) {
-    return 440 * Math.pow(2,(note-69)/12);
-};
-
-var logger = function(container, label, data) {
-    messages = label + " [channel: " + (data[0] & 0xf) + ", cmd: " + (data[0] >> 4) + ", type: " + (data[0] & 0xf0) + " , note: " + data[1] + " , velocity: " + data[2] + "]";
-    container.textContent = messages;
 };

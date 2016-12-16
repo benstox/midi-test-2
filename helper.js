@@ -23,3 +23,16 @@ var randChoice = function(choice_list) {
     var index = randInt(choice_list.length);
     return( choice_list[index] );
 };
+
+var rangeMap = function(x, a1, a2, b1, b2) {
+    return ((x - a1)/(a2-a1)) * (b2 - b1) + b1;
+};
+
+var frequencyFromNoteNumber = function(note) {
+    return 440 * Math.pow(2,(note-69)/12);
+};
+
+var logger = function(container, label, data) {
+    messages = label + " [channel: " + (data[0] & 0xf) + ", cmd: " + (data[0] >> 4) + ", type: " + (data[0] & 0xf0) + " , note: " + data[1] + " , velocity: " + data[2] + "]";
+    container.textContent = messages;
+};
