@@ -77,16 +77,21 @@ var process_markov_score = function(score) {
             var duration_variation = 25;
             var velocity_variation = 25;
             if (coll[index-1] == "." && coll[index+1] == ".") {
-                var duration = 800 * melody_speed;
+                var duration = 800;
+            } else if (coll[index-1] == "_" && coll[index+1] == ".") {
+                var duration = 750;
+            } else if (coll[index-1] == "_" && coll[index+1] == "_") {
+                var duration = 700;
             } else if (coll[index+1] == ".") {
-                var duration = 600 * melody_speed;
+                var duration = 600;
             } else if (coll[index+1] == "_") {
-                var duration = 525 * melody_speed;
+                var duration = 525;
             } else {
-                var duration = 300 * melody_speed;
+                var duration = 300;
             };
             duration = duration + _.random(-duration_variation, duration_variation);
-            var velocity = 80 + _.random(-velocity_variation, velocity_variation);
+            duration = duration * melody_speed;
+            var velocity = 75 + _.random(-velocity_variation, velocity_variation);
             acc.push({
                 shorthand : (value == "!" ? "ix" : value),
                 duration  : duration,
