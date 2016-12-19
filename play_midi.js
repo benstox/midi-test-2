@@ -1,5 +1,32 @@
-// http://stackoverflow.com/questions/23687635/how-to-stop-audio-in-an-iframe-using-web-audio-api-after-hiding-its-container-di
 // https://www.keithmcmillen.com/blog/making-music-in-the-browser-web-midi-api/
+
+// variables from the tutorial
+var log = console.log.bind(console);
+var keyData = $('#key_data');
+var deviceInfoInputs = $('#inputs');
+var deviceInfoOutputs = $('#outputs');
+var midi;
+var AudioContext = AudioContext || webkitAudioContext; // for ios/safari
+var context = new AudioContext();
+var activeNotes = [];
+var btnBox = $('#content');
+var btn = $('.button');
+var data;
+var cmd;
+var channel;
+var type;
+var note;
+var velocity;
+var sampleMap = {
+    key60: 1,
+    key61: 2,
+    key62: 3,
+    key63: 4,
+    key64: 5
+};
+var play_button = $("#play-button");
+var stop_button = $("#stop-button");
+var melody_timeouts = [];
 
 // set up the instrument
 var instrument = "celesta-mp3";
@@ -19,152 +46,53 @@ var notes = _.mapValues({
     n: {name: "G5"},
     o: {name: "A5"}}, function(v) {
         return(_.set(v, "source", "audio/" + instrument + "/" + v.name + ".mp3"));
-    });
+    }
+);
+var melody_speed = 1.0;
+
 var markov_order = 3;
 var processed_melodies = load_melody_data(VI, markov_order);
 
-// do stuff from the tutorial
-var log = console.log.bind(console), keyData = document.getElementById('key_data'), 
-        deviceInfoInputs = document.getElementById('inputs'), deviceInfoOutputs = document.getElementById('outputs'), midi;
-var AudioContext = AudioContext || webkitAudioContext; // for ios/safari
-var context = new AudioContext();
-var activeNotes = [];
-var btnBox = document.getElementById('content'), btn = document.getElementsByClassName('button');
-var data, cmd, channel, type, note, velocity;
-
-// request MIDI access
-if(navigator.requestMIDIAccess){
-    navigator.requestMIDIAccess({sysex: false}).then(onMIDISuccess, onMIDIFailure);
-}
-else {
-    alert("No MIDI support in your browser.");
-}
-
-// add event listeners
-document.addEventListener('keydown', keyController);
-document.addEventListener('keyup', keyController);
-for(var i = 0; i < btn.length; i++){
-    btn[i].addEventListener('mousedown', clickPlayOn);
-    btn[i].addEventListener('mouseup', clickPlayOff);   
-}
-
-// prepare audio files
-_.forEach(notes, addAudioProperties);
-
-var sampleMap = {
-    key60: 1,
-    key61: 2,
-    key62: 3,
-    key63: 4,
-    key64: 5
-};
-
 // user interaction --------------------------------------------------------------
 var clickPlayOn = function(e) {
-    e.target.classList.add('active');
-    // e.target.play();
+    $("#play-button").addClass('active');
+    play_markov_melody();
 };
 
 var clickPlayOff = function(e) {
-    e.target.classList.remove('active');
+    $("#play-button").removeClass('active');
+};
+
+var clickStopOn = function(e) {
+    $("#stop-button").addClass('active');
+    stop_music();
+};
+
+var clickStopOff = function(e) {
+    $("#stop-button").removeClass('active');
 };
 
 var keyController = function(e) {
     if(e.type == "keydown") {
         switch(e.keyCode) {
             case 81:
-                btn[0].classList.add('active');
-
-                // get a Markov melody!
-                score = generate_markov(processed_melodies, markov_order);
-                $("#print-melody").text(score);
-
-                // melody = [ // Asperges me
-                //     {shorthand: "c", duration: 300},
-                //     {shorthand: "d", duration: 300},
-                //     {shorthand: "f", duration: 300},
-                //     {shorthand: "e", duration: 300},
-                //     {shorthand: "d", duration: 325},
-                //     {shorthand: "e", duration: 350},
-                //     {shorthand: "f", duration: 350},
-                //     {shorthand: "g", duration: 1000},
-                //     {shorthand: "h", duration: 500},
-                //     {shorthand: "ix", duration: 300},
-                //     {shorthand: "j", duration: 300},
-                //     {shorthand: "j", duration: 300},
-                //     {shorthand: "ix", duration: 300},
-                //     {shorthand: "h", duration: 300},
-                //     {shorthand: "g", duration: 300},
-                //     {shorthand: "h", duration: 300},
-                //     {shorthand: "g", duration: 750},
-                //     {shorthand: "f", duration: 300},
-                //     {shorthand: "e", duration: 300},
-                //     {shorthand: "f", duration: 350},
-                //     {shorthand: "g", duration: 300},
-                //     {shorthand: "f", duration: 300},
-                //     {shorthand: "d", duration: 300},
-                //     {shorthand: "e", duration: 350},
-                //     {shorthand: "c", duration: 600},
-                //     {shorthand: "d", duration: 600},
-                //     {shorthand: "c", duration: 700},
-                //     {shorthand: "c", duration: 800}];
-
-                // turn the Markov score into a list of notes and durations
-                melody = process_markov_score(score);
-
-                // work out the temporal position of each note in the melody
-                // based on cummulative durations
-                melody = _.reduce(
-                    melody,
-                    function (acc, n) {
-                        acc.push(
-                            _.set(n, "position", (acc.length > 0 ? acc[acc.length-1].position + acc[acc.length-1].duration : 0)));
-                        return(acc);
-                    }, []);
-
-                // play the melody!!
-                _.forEach(
-                    melody,
-                    function(note_to_play) {
-                        console.log(notes[note_to_play.shorthand].source);
-                        setTimeout(notes[note_to_play.shorthand].play, note_to_play.position);
-                    });
+                $("#play-button").addClass('active');
+                play_markov_melody();
                 break;
             case 87:
-                btn[1].classList.add('active');
-                btn[1].play();
-                break;
-            case 69:
-                btn[2].classList.add('active');
-                btn[2].play();
-                break;
-            case 82:
-                btn[3].classList.add('active');
-                btn[3].play();
-                break;
-            case 84:
-                btn[4].classList.add('active');
-                btn[4].play();
-                break;                  
+                $("#stop-button").addClass('active');
+                stop_music();
+                break;  
             default:
                 //console.log(e);
         };
     } else if(e.type == "keyup") {
         switch(e.keyCode) {
             case 81:
-                btn[0].classList.remove('active');
+                $("#play-button").removeClass('active');
                 break;
             case 87:
-                btn[1].classList.remove('active');
-                break;
-            case 69:
-                btn[2].classList.remove('active');
-                break;
-            case 82:
-                btn[3].classList.remove('active');
-                break;
-            case 84:
-                btn[4].classList.remove('active');
+                $("#stop-button").removeClass('active');
                 break;
             default:
                 //console.log(e.keyCode);
@@ -297,8 +225,6 @@ var loadAudio = function(object, url) {
 };
 
 var addAudioProperties = function(object) {
-    // object.name = object.id;
-    // object.source = object.dataset.sound;
     loadAudio(object, object.source);
     object.play = function(volume) {
         var s = context.createBufferSource();
@@ -319,4 +245,105 @@ var addAudioProperties = function(object) {
         s.start();
         object.s = s;
     };
+
+    object.stop = function() {
+        if(object.s) {
+            object.s.stop();
+        };
+    };
 };
+
+var play_markov_melody = function() {
+    // get a Markov melody!
+    score = generate_markov(processed_melodies, markov_order);
+    $("#print-melody").text(score);
+
+    // melody = [ // Asperges me
+    //     {shorthand: "c", duration: 300},
+    //     {shorthand: "d", duration: 300},
+    //     {shorthand: "f", duration: 300},
+    //     {shorthand: "e", duration: 300},
+    //     {shorthand: "d", duration: 325},
+    //     {shorthand: "e", duration: 350},
+    //     {shorthand: "f", duration: 350},
+    //     {shorthand: "g", duration: 1000},
+    //     {shorthand: "h", duration: 500},
+    //     {shorthand: "ix", duration: 300},
+    //     {shorthand: "j", duration: 300},
+    //     {shorthand: "j", duration: 300},
+    //     {shorthand: "ix", duration: 300},
+    //     {shorthand: "h", duration: 300},
+    //     {shorthand: "g", duration: 300},
+    //     {shorthand: "h", duration: 300},
+    //     {shorthand: "g", duration: 750},
+    //     {shorthand: "f", duration: 300},
+    //     {shorthand: "e", duration: 300},
+    //     {shorthand: "f", duration: 350},
+    //     {shorthand: "g", duration: 300},
+    //     {shorthand: "f", duration: 300},
+    //     {shorthand: "d", duration: 300},
+    //     {shorthand: "e", duration: 350},
+    //     {shorthand: "c", duration: 600},
+    //     {shorthand: "d", duration: 600},
+    //     {shorthand: "c", duration: 700},
+    //     {shorthand: "c", duration: 800}];
+
+    // turn the Markov score into a list of notes and durations
+    melody = process_markov_score(score);
+
+    // work out the temporal position of each note in the melody
+    // based on cummulative durations
+    melody = _.reduce(
+        melody,
+        function (acc, n) {
+            acc.push(
+                _.set(n, "position", (acc.length > 0 ? acc[acc.length-1].position + acc[acc.length-1].duration : 0)));
+            return(acc);
+        }, []);
+
+    // play the melody!!
+    _.forEach(
+        melody,
+        function(note_to_play) {
+            console.log(notes[note_to_play.shorthand].source);
+            melody_timeouts.push(setTimeout(
+                function() {
+                    notes[note_to_play.shorthand].play(note_to_play.velocity);
+                },
+                note_to_play.position
+            ));
+        });
+    // recur
+    melody_timeouts.push(setTimeout(play_markov_melody, melody[melody.length-1].position + 2000 * melody_speed));
+};
+
+var stop_music = function() {
+    _.forEach(notes, function(note) {
+        note.stop();
+    });
+    _.forEach(melody_timeouts, function(timeout_id) {
+        clearTimeout(timeout_id);
+    });
+    melody_timeouts = [];
+};
+
+// add event listeners
+$(document).ready(function() {
+    // request MIDI access
+    if(navigator.requestMIDIAccess){
+        navigator.requestMIDIAccess({sysex: false}).then(onMIDISuccess, onMIDIFailure);
+    }
+    else {
+        alert("No MIDI support in your browser.");
+    }
+
+    // prepare audio files
+    _.forEach(notes, addAudioProperties);
+
+    $(this).keydown(keyController);
+    $(this).keyup(keyController);
+    $("#play-button").mousedown(clickPlayOn);
+    $("#play-button").mouseup(clickPlayOff);
+    $("#stop-button").mousedown(clickStopOn);
+    $("#stop-button").mouseup(clickStopOff);
+});

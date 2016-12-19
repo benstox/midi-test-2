@@ -1,26 +1,4 @@
-// OLD PYTHON VERSION
-// def load_strings(s, order):
-//     table = {}
-//     for i in range(len(s) - order):
-//         try:
-//             table[s[i:i + order]]
-//         except KeyError:
-//             table[s[i:i + order]] = []
-//         table[s[i:i + order]] += s[i + order]
-//     return table
-
-// def generate(order, strings_to_load, start = None, max_length = 20):
-//     table = load_strings(strings_to_load, order)
-//     if start == None:
-//         s = random.choice(table.keys())
-//     else:
-//         s = start
-//     try:
-//         while len(s) < max_length:
-//             s += random.choice(table[s[-order:]])
-//     except KeyError:
-//         pass
-//     return s
+// generate new melodies using Markov chains
 
 var load_melody_data = function(data, order) {
     // Process all the data provided for Markov chaining.
@@ -96,20 +74,23 @@ var process_markov_score = function(score) {
         if (value == "." || value == "_") {
             return(acc);
         } else {
-            var variation = 25;
+            var duration_variation = 25;
+            var velocity_variation = 25;
             if (coll[index-1] == "." && coll[index+1] == ".") {
-                var duration = 800;
+                var duration = 800 * melody_speed;
             } else if (coll[index+1] == ".") {
-                var duration = 600;
+                var duration = 600 * melody_speed;
             } else if (coll[index+1] == "_") {
-                var duration = 525;
+                var duration = 525 * melody_speed;
             } else {
-                var duration = 300;
+                var duration = 300 * melody_speed;
             };
-            duration = duration + _.random(-variation, variation);
+            duration = duration + _.random(-duration_variation, duration_variation);
+            var velocity = 80 + _.random(-velocity_variation, velocity_variation);
             acc.push({
                 shorthand : (value == "!" ? "ix" : value),
                 duration  : duration,
+                velocity  : velocity
             });
         };
         return(acc);
