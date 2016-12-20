@@ -55,7 +55,7 @@ var load_melody_data = function(data, order) {
 };
 
 var generate_markov = function(data, order, min_length) {
-    min_length = min_length || 15;
+    min_length = min_length || 30;
     if (data["initials"] && data["chains"] && data["finals"]) {
         var processed = data;
     } else {
@@ -63,7 +63,11 @@ var generate_markov = function(data, order, min_length) {
     };
     var s = randChoice(processed.initials);
     while (s.length < min_length || !(_.some(processed.finals, function(final) {return(_.endsWith(s, final));}))) {
-        s = s + randChoice(processed.chains[s.substring(s.length - order)]);
+        if (processed.chains[s.substring(s.length - order)]) {
+            s = s + randChoice(processed.chains[s.substring(s.length - order)]);
+        } else {
+            s = s + randChoice(processed.initials);
+        };
     };
     return(s);
 };
