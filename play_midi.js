@@ -48,9 +48,9 @@ var notes = _.mapValues({
         return(_.set(v, "source", "audio/" + instrument + "/" + v.name + ".mp3"));
     }
 );
-var melody_speed = 1.0;
+var melody_speed = 1.1;
 
-var markov_order = 3;
+var markov_order = 4;
 var processed_melodies = load_melody_data(VI, markov_order);
 
 // user interaction --------------------------------------------------------------
