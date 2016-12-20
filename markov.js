@@ -74,7 +74,7 @@ var process_markov_score = function(score) {
         if (value == "." || value == "_") {
             return(acc);
         } else {
-            var duration_variation = 25;
+            var duration_variation = 15;
             var velocity_variation = 25;
             if (coll[index-1] == "." && coll[index+1] == ".") {
                 var duration = 800;

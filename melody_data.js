@@ -17,4 +17,8 @@ var VI = {
     ant_regina_caeli               : 'fgfghh.!hg!hfgf.hghfggff_!gfghf.fj_jkkj!hgfghh.!!!_g!jfgf.!!!_g!jfgf.ghghf_g_f_f.!hgfghfhgfeff.!jkjj!j_jfgf.!hg!j_jfgff.jjfgh!hgfegff.ffhjkjj!gh.j!hfgf.fhjkjj!gh.j!hfgf.g!hghf_g_f_f.',
     communio_in_splendoribus       : 'fdffdffg_ff_g_f_f.ffghh_ggv.fgfd.ffgfhghv.fhjgfgfd.dfghfff_g_f_f.',
     communio_dicit_dominus_implete : 'fhhh!hghggfgf.g.dffdfffffdfffg_ff.fghhhghhijghgfgg.f.fghghjijhh!ghfghghghgfgg.f.hghghgfgg_h_g_g.!!g!j!hfgff.hgjlkjjlkji.hijh_gghjlkjhjj.g.jjihggfhfgg.hiji_hgfghf.f.',
+    introit_esto_mihi              : 'fdffddefgecffgfghghf_g_f_f.fffgfedefff_ecc.ffeggghfff_g_f_f.fghhhhhgghgff.fffggghffffdecc.cffghhgfg_h_g_g.hjjjjhjgg_h_f_f.ffedgeg_hfff_g_f_f.',
+    offertorium_domine_convertere  : 'fffgfffdfgff.fgghff_g_f_f.fhgffhgf_g_f_f.fgfff.fdffdd_cdffgffgffghgh_gfghgfgg.f.',
+    communio_pascha_nostrum        : 'ffhghfe.defd.fefghgfefgfgg.f.ffefdf.fffhgff.dfffdcdffhghff.ffeffdecc.fghghhghgfgfdfefgfeg_hghf_g_f_f.ff_dfef_ddefc.dcfgh_ghgfgh~h.fgg!hghggfgg.f.',
+    communio_surrexit_dominus      : 'dfdffg_hhjh!_jgfgfd.dddgeg_hffff_g_f_f.h!hg!h!hgfg_fde_fdedcf.dedcf_dff_g_f_f.',
 };
