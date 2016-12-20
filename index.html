@@ -106,18 +106,15 @@
 </head>
 <body>
 	<div id="content">
-		<div class="button" data-key="q" data-sound="audio/celesta-mp3/A4.mp3"></div>
-		<div class="button" data-key="w" data-sound="audio/celesta-mp3/B4.mp3"></div>
-		<div class="button" data-key="e" data-sound="audio/celesta-mp3/Db5.mp3"></div>
-		<div class="button" data-key="r" data-sound="audio/celesta-mp3/D5.mp3"></div>
-		<div class="button" data-key="t" data-sound="audio/celesta-mp3/E5.mp3"></div>
+		<div id="play-button" class="button" data-key="q" data-sound="audio/celesta-mp3/A4.mp3">&#9658;</div>
+		<div id="stop-button" class="button" data-key="w" data-sound="audio/celesta-mp3/B4.mp3">&#9611;</div>
 	</div>
 	<div id="device_info">
 		<div id="key_data"></div>
 		<div id="inputs"></div>
 		<div id="outputs"></div>
 	</div>
-	<div id="print-melody"></div>
+	<div id="print-melody" class="info"></div>
 	<div><a href="../index.html">Home</a></div>
 </body>
 <script src="helper.js" type="text/javascript"></script>
