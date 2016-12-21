@@ -1,4 +1,4 @@
-var VI = {
+var MODE_VI = {
     introit_requiem                : 'f_fgfffgh_hggfgg.f.fgh_hghhjhgh!hgffgh_gfgg.f.hghgfhghgff.hghhjhgh!hgfgh_gfgg.f.fggfghhhhhhgh.fghhhhhhhhg!gh.fghhhhhhhhh.hhhhfghgff.f_fgfffgh_hggfgg.f.fgh_hghhjhgh!hgffgh_gfgg.f.hghgfhghgff.hghhjhgh!hgfgh_gfgg.f.',
     kyrie_requiem                  : 'fgh!hh.g.hgfefgff.fgh!hh.g.hgfefgff.fgh!hh.g.hgfefgff.fgh!h.g.hgfefgff.fgh!h.g.hgfefgff.fgh!h.g.hgfefgff.fgh!hh.g.hgfefgff.fgh!hh.g.hgfefgff.jff.j!jkj!hg.hgfefgff.',
     resp_ne_recorderis             : 'dcffgh_hggfgg.f.fdfg!h!hg!.h!j_!hfgg.h!ghfdf_h_g_g.f.fhhghf_hghffdffgefgfdeddc.fghgh!hh.hjhggh!_hgfgh_gfgg.f.fg!_!!_h_!hgh_g_h!j_kjj!h!ghgfeghg.f.cdfffghffefg!_!_g_h!_hgghgfg.f.dcffgh_hggfgg.f.fdfg!h!hg!.h!j_!hfgg.h!ghfdf_h_g_g.f.fhhghf_hghffdffgefgfdeddc.fghgh!hh.hjhggh!_hgfgh_gfgg.f.fg!_!!_h_!hgh_g_h!j_kjj!h!ghgfeghg.f.cdfffghffefg!_!_g_h!_hgghgfg.f.',
@@ -19,6 +19,10 @@ var VI = {
     communio_dicit_dominus_implete : 'fhhh!hghggfgf.g.dffdfffffdfffg_ff.fghhhghhijghgfgg.f.fghghjijhh!ghfghghghgfgg.f.hghghgfgg_h_g_g.!!g!j!hfgff.hgjlkjjlkji.hijh_gghjlkjhjj.g.jjihggfhfgg.hiji_hgfghf.f.',
     introit_esto_mihi              : 'fdffddefgecffgfghghf_g_f_f.fffgfedefff_ecc.ffeggghfff_g_f_f.fghhhhhgghgff.fffggghffffdecc.cffghhgfg_h_g_g.hjjjjhjgg_h_f_f.ffedgeg_hfff_g_f_f.',
     offertorium_domine_convertere  : 'fffgfffdfgff.fgghff_g_f_f.fhgffhgf_g_f_f.fgfff.fdffdd_cdffgffgffghgh_gfghgfgg.f.',
-    communio_pascha_nostrum        : 'ffhghfe.defd.fefghgfefgfgg.f.ffefdf.fffhgff.dfffdcdffhghff.ffeffdecc.fghghhghgfgfdfefgfeg_hghf_g_f_f.ff_dfef_ddefc.dcfgh_ghgfgh~h.fgg!hghggfgg.f.',
+    communio_pascha_nostrum        : 'ffhghfe.defd.fefghgfefgfgg.f.ffefdf.fffhgff.dfffdcdffhghff.ffeffdecc.fghghhghgfgfdfefgfeg_hghf_g_f_f.ff_dfef_ddefc.dcfgh_ghgfghh.fgg!hghggfgg.f.',
     communio_surrexit_dominus      : 'dfdffg_hhjh!_jgfgfd.dddgeg_hffff_g_f_f.h!hg!h!hgfg_fde_fdedcf.dedcf_dff_g_f_f.',
+    offertorium_erit_vobis         : 'd_g_f_ghg.ghi_ggihigeg.eg_hhihghh.g.fghhjjjk_jj.jjkjjhjjj.h!j!gh!hgfg_hg.f.fghjkjjjjhgjjhihghh.g.ghhggfg.fhihhgghgffee.cdecdfghghg.f.ffhgffffddcdfffgffdffeedee.d.ffdfefffdcd.ffdfffdccdccdcedc.ccdf_g_e_ghffff_g_f_fg!!!!j!hfg.!!!_gh!fdf.ffg_ffgh_gfg.f.',
+    introit_quasimodo              : 'cddddfffgffffc.fgeffhgff.fdfgg!hgff.fef_ggffgffded.df_gghffgfddcd.cfffhgff.dff_efgffffddc.dfffhgff.',
+    communio_mite_manum_tuam       : 'ffgfghgfghg.fedfgfffffg.fdfgh!hgh.g.fdfghgfgfed.ffd_e_c_c.fg!h.!h.g!hf_g_f_f.',
+    introit_cantare_domino         : 'dffef_gg_ff_g_f_f.hgfgfhgfgfd.fgeffhgff.ffdfgg!hgff.fef_gg_ff_g_f_f.fgef_ggffgffc_d_c.ccfefggffhgfffffddfffddcdd_cdffgffeg!hh.ffhgh!fd.fffffhgff.',
 };
