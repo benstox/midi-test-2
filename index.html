@@ -106,14 +106,21 @@
 </head>
 <body>
 	<div id="content">
-		<div id="play-button" class="button" data-key="q" data-sound="audio/celesta-mp3/A4.mp3">&#9658;</div>
-		<div id="stop-button" class="button" data-key="w" data-sound="audio/celesta-mp3/B4.mp3">&#9611;</div>
+		<h1>Mode VI</h1>
+		<div class="button play-button" data-mode="VI">&#9658;</div>
+		<div class="button stop-button" data-mode="VI">&#9611;</div>
+		<h1>Mode VII</h1>
+		<div class="button play-button" data-mode="VII">&#9658;</div>
+		<div class="button stop-button" data-mode="VII">&#9611;</div>
 	</div>
 	<div id="device_info">
 		<div id="key_data"></div>
 		<div id="inputs"></div>
 		<div id="outputs"></div>
 	</div>
+	<h3>Markov order:</h3>
+	<div id="print-markov-order" class="info"></div>
+	<h3>Melody:</h3>
 	<div id="print-melody" class="info"></div>
 	<div><a href="../index.html">Home</a></div>
 </body>

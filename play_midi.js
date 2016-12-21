@@ -17,18 +17,9 @@ var channel;
 var type;
 var note;
 var velocity;
-var sampleMap = {
-    key60: 1,
-    key61: 2,
-    key62: 3,
-    key63: 4,
-    key64: 5
-};
-var play_button = $("#play-button");
-var stop_button = $("#stop-button");
-var melody_timeouts = [];
 
 // set up the instrument
+var melody_timeouts = [];
 var instrument = "celesta-mp3";
 var notes = _.mapValues({
     c: {name: "C4"},
@@ -48,56 +39,40 @@ var notes = _.mapValues({
         return(_.set(v, "source", "audio/" + instrument + "/" + v.name + ".mp3"));
     }
 );
+
 var melody_speed = 1.1;
 
 var markov_order = 4;
-var processed_melodies = load_melody_data(MODE_VI, markov_order);
+
+var melodies_data = {
+    VI: MODE_VI,
+    VII: MODE_VII,
+};
+
+var processed_melodies = _.mapValues(melodies_data, function(x) {return(load_melody_data(x, markov_order));});
 
 // user interaction --------------------------------------------------------------
 var clickPlayOn = function(e) {
-    $("#play-button").addClass('active');
-    play_markov_melody();
+    var button_clicked = $(this);
+    button_clicked.addClass('active');
+    var mode = button_clicked.data("mode");
+    play_markov_melody(mode);
 };
 
 var clickPlayOff = function(e) {
-    $("#play-button").removeClass('active');
+    var button_clicked = $(this);
+    button_clicked.removeClass('active');
 };
 
 var clickStopOn = function(e) {
-    $("#stop-button").addClass('active');
+    var button_clicked = $(this);
+    button_clicked.addClass('active');
     stop_music();
 };
 
 var clickStopOff = function(e) {
-    $("#stop-button").removeClass('active');
-};
-
-var keyController = function(e) {
-    if(e.type == "keydown") {
-        switch(e.keyCode) {
-            case 81:
-                $("#play-button").addClass('active');
-                play_markov_melody();
-                break;
-            case 87:
-                $("#stop-button").addClass('active');
-                stop_music();
-                break;  
-            default:
-                //console.log(e);
-        };
-    } else if(e.type == "keyup") {
-        switch(e.keyCode) {
-            case 81:
-                $("#play-button").removeClass('active');
-                break;
-            case 87:
-                $("#stop-button").removeClass('active');
-                break;
-            default:
-                //console.log(e.keyCode);
-        };
-    };
+    var button_clicked = $(this);
+    button_clicked.removeClass('active');
 };
 
 // midi functions --------------------------------------------------------------
@@ -118,7 +93,6 @@ var onMIDISuccess = function(midiAccess) {
 };
 
 var onMIDIMessage = function(event) {
-    console.log(event);
     data = event.data,
     cmd = data[0] >> 4,
     channel = data[0] & 0xf,
@@ -253,9 +227,9 @@ var addAudioProperties = function(object) {
     };
 };
 
-var play_markov_melody = function() {
+var play_markov_melody = function(mode) {
     // get a Markov melody!
-    score = generate_markov(processed_melodies, markov_order);
+    score = generate_markov(processed_melodies[mode], markov_order);
     $("#print-melody").text(score);
 
     // melody = [ // Asperges me
@@ -305,7 +279,6 @@ var play_markov_melody = function() {
     _.forEach(
         melody,
         function(note_to_play) {
-            console.log(notes[note_to_play.shorthand].source);
             melody_timeouts.push(setTimeout(
                 function() {
                     notes[note_to_play.shorthand].play(note_to_play.velocity);
@@ -314,7 +287,7 @@ var play_markov_melody = function() {
             ));
         });
     // recur
-    melody_timeouts.push(setTimeout(play_markov_melody, melody[melody.length-1].position + 2000 * melody_speed));
+    melody_timeouts.push(setTimeout(function() {play_markov_melody(mode);}, melody[melody.length-1].position + 2000 * melody_speed));
 };
 
 var stop_music = function() {
@@ -337,13 +310,14 @@ $(document).ready(function() {
         alert("No MIDI support in your browser.");
     }
 
+    // print markov order
+    $("#print-markov-order").text(markov_order)
+
     // prepare audio files
     _.forEach(notes, addAudioProperties);
 
-    $(this).keydown(keyController);
-    $(this).keyup(keyController);
-    $("#play-button").mousedown(clickPlayOn);
-    $("#play-button").mouseup(clickPlayOff);
-    $("#stop-button").mousedown(clickStopOn);
-    $("#stop-button").mouseup(clickStopOff);
+    $(".play-button").mousedown(clickPlayOn);
+    $(".play-button").mouseup(clickPlayOff);
+    $(".stop-button").mousedown(clickStopOn);
+    $(".stop-button").mouseup(clickStopOff);
 });
